@@ -4,8 +4,9 @@ require('dotenv/config');
 const commands = [
     {
         name: 'version',
-        description: 'Prints current bot version.',
-    }
+        description: 'Prints current bot version, as well as some server-side info.',
+    },
+ 
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
