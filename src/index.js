@@ -1,9 +1,10 @@
 // moyAI Discord bot
 // Written by James // kernaltrap
 // Officially hosted by Hydrogen
-// Version 2.0
+// Version 2.1
 
-require('dotenv/config'); // import required modules.
+const { TOKEN, APP_ID, GUILD_ID, API_KEY, CHANNEL_ID, VERSION, BLACKLIST } = require('./config.json');
+//require('dotenv/config'); // import required modules.
 require('process');
 const { Client, IntentsBitField } = require('discord.js');
 
@@ -22,15 +23,20 @@ client.on('ready', (c) => { // print message when bot has successfully ben ran.
 })
 
 const configuration = new Configuration({ // set the OpenAI API Key.
-    apiKey: process.env.API_KEY,
+    apiKey: API_KEY,
 })
 const openai = new OpenAIApi(configuration);
 
-
 client.on('messageCreate', async (message) => { // bot code
-   if (message.author.bot) return;
-   if (message.channel.id != process.env.CHANNEL_ID) return; // only send and read messages in a specific channel, the ID is set in .env
-   if (message.content.startsWith('*')) return;
+   if (message.channel.id != CHANNEL_ID) return; // only send and read messages in a specific channel, the ID is set in .env
+   if (message.author.bot) return; // if the message is from a bot, do not respond
+   if (message.author.system) return; // ignore messages from system (pins, Clyde, etc)
+   if (message.content.startsWith('*')) return; // ignore messages starting with *
+   //const arrayOfUsersIds = ['658361671236190259', '1022248762019680359']; // blacklist, ignore messages from these member IDs.
+    //for (let i = 0; i < arrayOfUsersIds.length; i++) {
+    //    if (message.author.id === arrayOfUsersIds[i]) return message.reply('You are on the blacklist!');
+    //};
+    
     // ChatGPT TURBO prompt
    let conversationLog = [{ role: 'system', content: "You are a sarcastic chatbot named moyai. Randomly send the moyai emoji at random intervals." }];
 
@@ -57,6 +63,7 @@ client.on('messageCreate', async (message) => { // bot code
 
    message.reply(result.data.choices[0].message); // sends the message
 
+
 })
 
 var os = require('os'); // import os module
@@ -66,9 +73,9 @@ client.on('interactionCreate', (interaction) => { // slash commands, feel free t
     if (!interaction.isChatInputCommand()) return; 
     // shows version of bot, NodeJS, and server OS and Memory usage.
     if (interaction.commandName === 'version') {
-        interaction.reply(`Server is running version ${process.env.VERSION} of moyAI, and ${process.version} of NodeJS.\n Server Stats \n OS Version: ${os.platform()} \n Memory Usage: ${os.totalmem} / ${os.freemem}`);
+        interaction.reply(`Server is running version ${VERSION} of moyAI, and ${process.version} of NodeJS.\n Server Stats \n OS Version: ${os.platform()} \n Memory Usage: ${os.totalmem} / ${os.freemem}`);
     }
     // if you wanna add more commands, check out the docs!
 });
 
-client.login(process.env.TOKEN); // logs into the bots account.
+client.login(TOKEN); // logs into the bots account.
