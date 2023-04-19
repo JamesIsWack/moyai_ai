@@ -2,7 +2,7 @@
 OpenAI powered moyai chatbot. Written in Javascript.
 
 # setup
-extract the `node_modules.zip` into the running directory of the bot, or install `discord.js`, `openai`, and `dotenv` with `npm install` in the current running directory.
+run `npm install git+https://github.com/JamesIsWack/moyai_ai`. if you get errors run `npm -i`. then extract the config.json and put it into the `src` directory, and run `node index.js`
 
 # TODO
 - Change the output of slash commands to be embeds
