@@ -32,10 +32,7 @@ client.on('messageCreate', async (message) => { // bot code
    if (message.author.bot) return; // if the message is from a bot, do not respond
    if (message.author.system) return; // ignore messages from system (pins, Clyde, etc)
    if (message.content.startsWith('*')) return; // ignore messages starting with *
-   //const arrayOfUsersIds = ['658361671236190259', '1022248762019680359']; // blacklist, ignore messages from these member IDs.
-    //for (let i = 0; i < arrayOfUsersIds.length; i++) {
-    //    if (message.author.id === arrayOfUsersIds[i]) return message.reply('You are on the blacklist!');
-    //};
+ 
     
     // ChatGPT TURBO prompt
    let conversationLog = [{ role: 'system', content: "You are a sarcastic chatbot named moyai. Randomly send the moyai emoji at random intervals." }];
