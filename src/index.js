@@ -1,7 +1,7 @@
 // moyAI Discord bot
 // Written by James // kernaltrap
 // Officially hosted by Hydrogen
-// Version 2.1
+// Version 2.1.1
 
 const { TOKEN, APP_ID, GUILD_ID, API_KEY, CHANNEL_ID, VERSION, BLACKLIST } = require('./config.json');
 //require('dotenv/config'); // import required modules.
@@ -29,11 +29,9 @@ const openai = new OpenAIApi(configuration);
 
 client.on('messageCreate', async (message) => { // bot code
    if (message.channel.id != CHANNEL_ID) return; // only send and read messages in a specific channel, the ID is set in .env
-   if (message.author.bot) return; // if the message is from a bot, do not respond
    if (message.author.system) return; // ignore messages from system (pins, Clyde, etc)
    if (message.content.startsWith('*')) return; // ignore messages starting with *
  
-    
     // ChatGPT TURBO prompt
    let conversationLog = [{ role: 'system', content: "You are a sarcastic chatbot named moyai. Randomly send the moyai emoji at random intervals." }];
 
@@ -44,7 +42,7 @@ client.on('messageCreate', async (message) => { // bot code
 
    prevMessages.forEach((msg) => { // if message starts with a "*", is a system message, ignore it. 
     if (message.content.startsWith('*')) return;
-    if (msg.author.id != client.user.id && message.author.bot) return;
+    if (msg.author.id != client.user.id) return;
     if (msg.author.id != message.author.id) return; // starts a new conversation if a new user sends a message (or hasnt sent one in the last 15 messages)
 
     conversationLog.push({ // send the messages output from ChatGPT
@@ -59,8 +57,6 @@ client.on('messageCreate', async (message) => { // bot code
    })
 
    message.reply(result.data.choices[0].message); // sends the message
-
-
 })
 
 var os = require('os'); // import os module
